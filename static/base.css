@@ -1,0 +1,95 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    background-color: aliceblue;
+}
+
+header * {
+    color: aliceblue;
+    z-index: 1;
+}
+
+header {
+    background-color: cornflowerblue;
+    height: 64px;
+    top: 0%;
+}
+
+header .logo {
+    float: left;
+    height: inherit;
+    margin-left: 2em;
+}
+
+header .logo-text {
+    margin: 9px;
+}
+
+header .logo-text span {
+    color: rgb(35, 6, 114);
+}
+
+header ul {
+    float: right;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+header ul li {
+    float: left;
+    position: relative;
+    min-width: 120px;
+    width: auto;
+    text-align: center;
+}
+
+header ul li ul {
+    position: absolute;
+    right: 0px;
+    display: none;
+}
+
+header ul li:hover ul {
+    display: block;
+}
+
+header ul li ul li {
+    background-color: cornflowerblue;
+    min-width: 120px;
+}
+
+header ul li ul li a {
+    padding: 10px 0 10px 0;
+}
+
+header ul li ul li a:hover {
+    background-color: #43A047;
+    transition: 0.8s;
+}
+
+header ul li ul li a.logout {
+    color: red;
+}
+
+header ul li ul li a.logout:hover {
+    color: white;
+    background-color: red;
+    transition: 0.1s;
+}
+
+header ul li a {
+    display: block;
+    padding: 21px;
+    font-size: 1.1em;
+    text-decoration: none;
+}
+
+header ul li a:hover {
+    background-color: rgb(39, 104, 224);
+    transition: 1s;
+}

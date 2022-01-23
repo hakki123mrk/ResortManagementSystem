@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='guest.css') }}"/>{% endblock %}
+{% block title %}Post Employee{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Guest Check-In</h1>
+        <input type="hidden" name="selectroom" id="selectroom" value="{{ selectroom }}"/>
+        {% if selectroom == 0 %}
+        <select name="guest" id="guest">
+        {%else %}
+        <input type="hidden" name="guest" id="guest" value="{{ guestid }}"/>
+        <select name="guest" id="guest" disabled=true>
+            {% endif %}
+            {% for guest in guestlist %}{% if guest['guest_id']|int == guestid|int %}
+            <option value="{{ guest['guest_id'] }}" selected>{{ guest['guest_id'] }} - {{ guest['guest_name'] }}</option>
+            {% else %}<option value="{{ guest['guest_id'] }}" >{{ guest['guest_id'] }} - {{ guest['guest_name'] }}</option>{% endif %}{% endfor %}
+        </select><br/>
+        {% if selectroom == 0 %}
+        <select name="resort" id="resort">
+            {%else %}
+            <input type="hidden" name="resort" id="resort" value="{{ resortid }}"/>
+        <select name="resort" id="resort" disabled=true>
+        {% endif %}
+            {% for resort in resortlist %}
+            <option value="{{ resort['resort_id'] }}">{{ resort['resort_name'] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        {% if selectroom == 0 %}
+        <button type="submit">Select Room</button>
+        {% else %}
+        <select id="room" name="room">
+        {% for room in rooms %}
+            {% if room['status'] == 0 %}
+            <option value="{{ room['room_number'] }}">{{ room['room_number'] }} - {{ room['room_type'] }}</option>
+            {% endif %}
+        {% endfor %} 
+        </select>
+        <input type="date" id="checkout" name="checkout" placeholder="Check out date" required min="{{ mindate }}" max="{{ maxdate }}"/>
+        <button type="submit">Check In</button>
+        {% endif %}
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}"/>
+</head>
+<body>
+    <h1 style="text-align: center;">Admin Login</h1>
+    <form class="form" method="POST">
+        <input class="input" type="text" id="admin" name="admin" placeholder="Enter Admin Name" required><br/>
+        <input class="input" type="password" id="passwd" name="passwd" placeholder="Enter Admin password" required>
+        <button type="submit">Login</button>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value="{{ message }}" readonly/>
+        {% endfor %}
+</body>
+    </form>    
+</html>

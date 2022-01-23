@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='guest.css') }}">{% endblock %}
+{% block title %}Check Out{% endblock %}
+{% block content %}
+<div class="servicelist">
+<h1>Check out</h1>
+<h2>{{ guest['guest_name'] }} - {{ guest['guest_id'] }}</h2>
+<h4>{{ guest['address'] }}</h4>
+<h4>{{ guest['phone'] }}</h4>
+<br>
+<br>
+<table>
+    <tr>
+        <th>Items</th>
+        <th>Price</th>
+    </tr>
+    {% set var = namespace(total = 0) %}
+    <tr style="white-space: nowrap;">
+        <td>{{ room['room_type'] }}</td>
+        <td>{{ room['room_price'] }}</td>
+        {% set var.total = room['room_price']|float + var.total %}
+    </tr>
+    {% for service in availedservices %}
+    <tr style="white-space: nowrap;">
+        <td>{{ service[0] }}</td>
+        <td>{{ service[1] }}</td>
+    </tr>
+    {% set var.total = service[1]|float + var.total %}
+    {% endfor %}
+    <tr style="color: red;">
+        <td>Total</td>
+        <td>{{ var.total|float }}</td>
+    </tr>
+</table>
+<form method="post">
+    <button style="background-color: red;" type="submit">Check Out</button>
+    {% for message in get_flashed_messages() %}
+    <input class="flash" value=" {{ message }} " readonly/>
+    {% endfor %}
+</div>
+</form>
+{% endblock %}

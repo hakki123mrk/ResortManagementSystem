@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='guest.css') }}">{% endblock %}
+{% block title %}Add Guest{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Add Guest</h1>
+        <input type="text" name="guestname" id="guestname" placeholder="Enter guest name" required/>
+        <input type="number" name="phoneno" id="phoneno" placeholder="Enter phone number" required/>
+        <input type="text" name="address" id="address" placeholder="Enter address" required/>
+        <select name="idtype" id="idtype" required>
+            {% for id in idtypes %}
+            <option value="{{ id['id_type'] }}">{{ id['id_name'] }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="idnumber" id="idnumber" placeholder="Enter ID number" required/>
+        <button type="submit">Add</button>        
+        {% for message in get_flashed_messages() %}
+        <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}

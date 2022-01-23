@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='resort.css') }}">{% endblock %}
+{% block title %}Resort's List{% endblock %}
+{% block content %}
+    <div class="resortlist">
+        <h1>Resort List</h1>
+        <table>
+            <tr>
+                <th>Resort ID</th>
+                <th>Resort Name</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+            {% for resort in resortlist %}
+            <tr>
+                <td>{{ resort[0] }}</td>
+                <td>{{ resort[1] }}</td>
+                <td>{{ resort[2] }}</td>
+                <td><a href="{{ url_for('resort.updateresort',resortid=resort[0]) }} ">update</a> 
+                <a style="color: red;" href="{{ url_for('resort.deleteresort',resortid=resort[0]) }} ">delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

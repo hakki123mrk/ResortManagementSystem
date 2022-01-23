@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='guest.css') }}">{% endblock %}
+{% block title %}Add Services{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Add Services</h1>
+        <select name="guest" id="guest" disabled=true>
+            {% for guest in guests %}
+            <option value="{{ guest['guest_id'] }}">{{ guest['guest_name'] }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" value="{{ guestid }}" name="guest" id="guest">
+        <select name="service" id="service" required>
+            {% for service in services %}
+            <option value="{{ service['service_id'] }}">{{ service['service_name'] }} - {{ service['price'] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add Service</button>        
+        {% for message in get_flashed_messages() %}
+        <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+    <div class="servicelist">
+        <h1>Availed Services</h1>
+        <table>
+            <tr>
+                <th>Service Name</th>
+                <th>Price</th>
+            </tr>
+            {% set var = namespace(total = 0) %}
+            {% for service in availedservices %}
+            <tr style="white-space: nowrap;">
+                <td>{{ service[0] }}</td>
+                <td>{{ service[1] }}</td>
+            </tr>
+            {% set var.total = service[1]|float + var.total %}
+            {% endfor %}
+            <tr style="color: red;">
+                <td>Total</td>
+                <td>{{ var.total|float }}</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

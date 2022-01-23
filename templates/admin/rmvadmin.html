@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='adm.css') }}">{% endblock %}
+{% block title %}Remove Admin{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Remove Admin</h1>
+        <input class="input" type="password" name="admpass" id="admpass" placeholder="Enter your password" required/>
+        <input class="input" type="text" id="rmadm" name="rmadm" placeholder="Enter name of the admin to be removed" required/><br>
+        <input class="input" type="password" id="rmadmpass" name="rmadmpass" placeholder="Enter Password for the admin" required/><br>
+        <button type="submit">Remove</button>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}

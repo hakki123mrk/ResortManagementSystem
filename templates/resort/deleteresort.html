@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='resort.css') }}">{% endblock %}
+{% block title %}Delete Resort{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Delete Resort</h1>
+        <input class="input" type="text" id="resortid" name="resortid" placeholder="Enter Resort id" value="{{ resortid }}" required/><br>
+        <button type="submit">Delete</button>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='employee.css') }}">{% endblock %}
+{% block title %}Employee List{% endblock %}
+{% block content %}
+    <div class="employeelist">
+        <h1>Employee List</h1>
+        <table>
+            <tr>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+            {% for employee in employeelist %}
+            <tr>
+                <td>{{ employee[0] }}</td>
+                <td>{{ employee[1] }}</td>
+                <td>{{ employee[2] }}</td>
+                <td>{{ employee[3] }}</td>
+                <td>{{ employee[4] }}</td>
+                <td style=" white-space: nowrap;"><a href="{{ url_for('emp.updateemployee',employeeid=employee[0]) }} ">update</a> 
+                    <a style="color: green;" href="{{ url_for('emp.postemployee',employeeid=employee[0]) }} ">post</a>
+                <a style="color: red;" href="{{ url_for('emp.deleteemployee',employeeid=employee[0]) }} ">delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+        </form>
+    </div>
+{% endblock %}

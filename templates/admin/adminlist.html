@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='adm.css') }}">{% endblock %}
+{% block title %}Admin's List{% endblock %}
+{% block content %}
+    <div class="adminlist">
+        <h1>Admin's List</h1>
+        <table>
+            <tr>
+                <th>Admin ID</th>
+                <th>Admin Name</th>
+            </tr>
+            {% for admin in adminlist %}
+            <tr>
+                <td>{{ admin[0] }}</td>
+                <td>{{ admin[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

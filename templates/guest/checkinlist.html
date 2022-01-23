@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='guest.css') }}">{% endblock %}
+{% block title %}Guest List{% endblock %}
+{% block content %}
+    <div class="guestlist">
+        <h1>Guest List</h1>
+        <table>
+            <tr>
+                <th>Guest ID</th>
+                <th>Guest Name</th>
+                <th>Resort Name</th>
+                <th>Room number</th>
+                <th>Actions</th>
+            </tr>
+            {% for guest in guestlist %}
+            <tr style="white-space: nowrap;">
+                <td>{{ guest[0] }}</td>
+                <td>{{ guest[1] }}</td>
+                <td>{{ guest[2] }}</td>
+                <td>{{ guest[3] }}</td>
+                <td><a style="color: burlywood;" href="{{ url_for('guest.addservices',guestid=guest[0]) }} ">Additional Servies</a>
+                <a style="color: green;" href="{{ url_for('guest.checkout',guestid=guest[0]) }} ">check-out</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='resort.css') }}">{% endblock %}
+{% block title %}Add Resort{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Add Resort</h1>
+        <input class="input" type="text" id="newresort" name="newresort" placeholder="Enter Resort Name" required/><br>
+        <input class="input" type="text" id="resortloc" name="resortloc" placeholder="Enter Location" required/><br>
+        {% for room in roomtypes %}
+        <input class="input" type="number" id="{{ room['room_type_id'] }}" name="{{ room['room_type_id'] }}" placeholder="Enter number of {{ room['room_type'] }}" required/><br>
+        {% endfor %}
+        <button type="submit">Add</button>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}

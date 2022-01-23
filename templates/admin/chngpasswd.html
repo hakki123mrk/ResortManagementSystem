@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='adm.css') }}">{% endblock %}
+{% block title %}Change Password{% endblock %}
+{% block content %}
+<form method="post">
+        <h1>Change Password</h1>
+        <input class="input" type="password" id="curpass" name="curpass" placeholder="Enter Current Password" required/><br>
+        <input class="input" type="text" id="newpass" name="newpass" placeholder="Enter new Password" required/><br>
+        <input class="input" type="password" name="cnfrmpass" id="cnfrmpass" placeholder="Confirm new Password" required/>
+        <button type="submit">Change</button>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}

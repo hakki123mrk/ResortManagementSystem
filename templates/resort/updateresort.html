@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='resort.css') }}">{% endblock %}
+{% block title %}Update Resort{% endblock %}
+{% block content %}
+    <form method="post">
+        <h1>Update Resort</h1>
+        <input class="input" type="text" id="resortid" name="resortid" placeholder="Enter Resort id" value="{{ resort['resort_id'] }}" required/><br>
+        <input class="input" type="text" id="newname" name="newname" placeholder="Enter new name" value="{{ resort['resort_name'] }}" /><br>
+        <input class="input" type="text" name="newloc" id="newloc" placeholder="Enter new Location" value="{{ resort['location'] }}" />
+        <button type="submit">Update</button>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+    </form>
+{% endblock %}
