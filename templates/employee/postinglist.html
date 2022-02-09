@@ -3,6 +3,11 @@
 {% block title %}Posting List{% endblock %}
 {% block content %}
     <div class="employeelist">
+        <form>
+            {% for message in get_flashed_messages() %}
+                <input class="flash" value=" {{ message }} " readonly/>
+            {% endfor %}
+            </form>
         <h1>Posting List</h1>
         <table>
             <tr>
@@ -10,6 +15,7 @@
                 <th>Employee Name</th>
                 <th>Resort</th>
                 <th>Designation</th>
+                <th>Posting Date</th>
                 <th>Actions</th>
             </tr>
             {% for employee in posting %}
@@ -18,14 +24,10 @@
                 <td>{{ employee[1] }}</td>
                 <td>{{ employee[2] }}</td>
                 <td>{{ employee[3] }}</td>
+                <td>{{ employee[4] }}</td>
                 <td style=" white-space: nowrap;"><a style="color: red;" href="{{ url_for('emp.deleteposting',employeeid=employee[0]) }} ">delete</a></td>
             </tr>
             {% endfor %}
         </table>
-        <form>
-        {% for message in get_flashed_messages() %}
-            <input class="flash" value=" {{ message }} " readonly/>
-        {% endfor %}
-        </form>
     </div>
 {% endblock %}

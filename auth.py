@@ -1,3 +1,4 @@
+from datetime import date
 import functools
 from asyncio.windows_events import NULL
 from distutils.log import error
@@ -10,7 +11,6 @@ from ResortManagementSystem.db import get_db
 
 bp = Blueprint('auth', __name__)
 
-@bp.route('/', methods=('GET', 'POST'))
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
@@ -35,7 +35,7 @@ def login():
             session.clear()
             session['adminid'] = admin['admin_id']
             session['admin'] = admin['admin']
-            return render_template('base.html')
+            return redirect(url_for('auth.index'))
 
         flash(error)
     return render_template('auth/login.html')
@@ -64,3 +64,17 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+@bp.route('/', methods=('GET', 'POST'))
+@login_required
+def index():
+    db = get_db()
+    indexdata = db.execute(
+        'SELECT * FROM indexdata',
+    ).fetchall()
+    checkoutlist = db.execute(
+        'SELECT * FROM checkoutlist',
+    ).fetchall()
+
+    return render_template('index.html', indexdata = indexdata, checkoutlist = checkoutlist)

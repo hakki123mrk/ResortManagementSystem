@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS guests;
 DROP TABLE IF EXISTS additional_services;
 DROP TABLE IF EXISTS occupants;
 DROP TABLE IF EXISTS availed_additional_services;
+DROP TRIGGER IF EXISTS status_occupied;
+DROP TRIGGER IF EXISTS status_UNoccupied;
 
 CREATE TABLE admin (
     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +50,7 @@ CREATE TABLE employee_posting(
     employee_id NUMBER(5) REFERENCES employee(employee_id) ON DELETE CASCADE,
     resort_id NUMBER(5) REFERENCES resort(resort_id) ON DELETE CASCADE,
     designation VARCHAR2(20),
-    date_of_posting DATE DEFAULT (datetime('now'))
+    date_of_posting DATE DEFAULT (date('now'))
 );
 
 CREATE TABLE id_types(
@@ -70,7 +72,7 @@ CREATE TABLE occupants (
     resort_id NUMBER(5) REFERENCES resort(resort_id),
     room_number NUMBER(5) REFERENCES rooms(room_number),
     number_of_occupants NUMBER(1),
-    check_in_date DATE DEFAULT (datetime('now')),
+    check_in_date DATE DEFAULT (date()),
     check_out_date DATE,
     CHECK (number_of_occupants > 0)
 );
@@ -85,6 +87,87 @@ CREATE TABLE availed_additional_services (
     guest_id NUMBER(5) REFERENCES occupants(guest_id) ON DELETE CASCADE,
     service_id NUMBER(5) REFERENCES additional_services(service_id)
 );
+
+CREATE TRIGGER status_occupied
+AFTER INSERT ON occupants
+BEGIN
+    UPDATE rooms SET status = 1 WHERE room_number = new.room_number;
+END;
+
+CREATE TRIGGER status_unoccupied
+AFTER DELETE ON occupants
+BEGIN
+    UPDATE rooms SET status = 0 WHERE room_number = old.room_number;
+END;
+
+CREATE VIEW checked_in_guests (
+    resort_id,
+    guest_count
+)
+AS
+SELECT
+    r.resort_id,
+    COUNT(guest_id)
+    FROM resort r
+    LEFT JOIN occupants o ON r.resort_id = o.resort_id
+    GROUP BY r.resort_id;
+
+CREATE VIEW available_rooms(
+    resort_id,
+    available_rooms
+)
+AS
+SELECT 
+    r.resort_id,
+    count(room_number)
+    FROM resort r
+    LEFT JOIN rooms rm ON r.resort_id = rm.resort_id
+    WHERE room_number NOT IN (SELECT room_number FROM occupants)
+    GROUP BY r.resort_id;
+
+CREATE VIEW posted_employees (
+    resort_id,
+    employee_count
+)
+AS
+SELECT
+    r.resort_id,
+    COUNT(employee_id)
+    FROM resort r
+    LEFT JOIN employee_posting ep ON r.resort_id = ep.resort_id
+    GROUP BY r.resort_id;
+
+CREATE VIEW indexdata (
+    resort_id,
+    checked_guests,
+    available_rooms,
+    posted_employees
+)
+AS 
+SELECT resort_name,
+    guest_count,
+    available_rooms,
+    employee_count
+FROM resort r
+LEFT JOIN checked_in_guests o ON r.resort_id = o.resort_id
+LEFT JOIN available_rooms rm ON r.resort_id = rm.resort_id
+LEFT JOIN posted_employees pe ON r.resort_id = pe.resort_id
+GROUP BY r.resort_id;
+
+CREATE VIEW checkoutlist
+AS
+SELECT 
+        o.guest_id,
+        guest_name,
+        resort_name,
+        room_number
+    FROM
+        occupants o,
+        guests g,
+        resort r
+    WHERE o.guest_id = g .guest_id and o.resort_id = r.resort_id 
+    group by g.guest_id 
+    having date(check_out_date) = date();
 
 INSERT INTO sqlite_sequence VALUES('admin', 100);
 INSERT INTO sqlite_sequence VALUES('resort', 500);

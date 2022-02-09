@@ -3,6 +3,11 @@
 {% block title %}Guest List{% endblock %}
 {% block content %}
     <div class="guestlist">
+        <form>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+        </form>
         <h1>Guest List</h1>
         <table>
             <tr>
@@ -10,6 +15,8 @@
                 <th>Guest Name</th>
                 <th>Resort Name</th>
                 <th>Room number</th>
+                <th>Check-In Date</th>
+                <th>check-Out Date</th>
                 <th>Actions</th>
             </tr>
             {% for guest in guestlist %}
@@ -18,15 +25,12 @@
                 <td>{{ guest[1] }}</td>
                 <td>{{ guest[2] }}</td>
                 <td>{{ guest[3] }}</td>
+                <td>{{ guest[4] }}</td>
+                <td>{{ guest[5] }}</td>
                 <td><a style="color: burlywood;" href="{{ url_for('guest.addservices',guestid=guest[0]) }} ">Additional Servies</a>
                 <a style="color: green;" href="{{ url_for('guest.checkout',guestid=guest[0]) }} ">check-out</a></td>
             </tr>
             {% endfor %}
         </table>
-        <form>
-        {% for message in get_flashed_messages() %}
-            <input class="flash" value=" {{ message }} " readonly/>
-        {% endfor %}
-        </form>
     </div>
 {% endblock %}

@@ -1,12 +1,8 @@
-import datetime
-from distutils.log import error
-from re import search
+from datetime import date, datetime, timedelta
 from sqlite3 import IntegrityError
-from webbrowser import get
 
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
-from itsdangerous import exc
 
 from ResortManagementSystem.auth import login_required
 from ResortManagementSystem.db import get_db
@@ -24,12 +20,15 @@ def addguest():
         address = request.form['address']
         phoneno = request.form['phoneno']
 
-        db.execute(
-            'INSERT INTO guests(guest_name, id_type, id_number, address, phone) VALUES(?, ?, ?, ?, ?)',
-            (guestname, idtype, idnumber, address, phoneno,),
-        )
-        db.commit()
-        flash('Guest details has been saved')
+        try:
+            db.execute(
+                'INSERT INTO guests(guest_name, id_type, id_number, address, phone) VALUES(?, ?, ?, ?, ?)',
+                (guestname, idtype, idnumber, address, phoneno,),
+            )
+            db.commit()
+            flash('Guest details has been saved')
+        except IntegrityError:
+            flash('Phone number already exists')
 
     id_types = db.execute(
         'SELECT * FROM id_types'
@@ -111,23 +110,19 @@ def checkin(guestid):
                 'SELECT r.room_type_id, room_type, room_number, status FROM rooms r, room_types rt WHERE r.room_type_id = rt.room_type_id and resort_id = ?',
                 (resort,),
             ).fetchall()
-            mindate = datetime.date.today() + datetime.timedelta(1)
-            maxdate = datetime.date.today() + datetime.timedelta(10)
+            mindate = date.today() + timedelta(1)
+            maxdate = date.today() + timedelta(10)
             return render_template('guest/checkin.html', guestid = guestid, resortid = resort, guestlist = guestlist, resortlist = resortlist, selectroom = selectroom, rooms = rooms, mindate = mindate, maxdate = maxdate)
         else:
             guestid = request.form.get('guest')
             resort = request.form.get('resort')
             room = request.form.get('room')
-            checkout = datetime.datetime.strptime(request.form['checkout'], '%Y-%m-%d')
+            checkout = datetime.strptime(request.form['checkout'], '%Y-%m-%d')
 
             try:
                 db.execute(
                 'INSERT INTO occupants(guest_id, resort_id, room_number, number_of_occupants, check_out_date) VALUES (?, ?, ?, ?, ?)',
                 (guestid, resort, room, 4, checkout,),
-                )
-                db.execute(
-                    'UPDATE rooms SET status = ? WHERE room_number = ?',
-                    (1, room),
                 )
                 db.commit()
                 flash('Check-In Complete')
@@ -144,7 +139,7 @@ def checkin(guestid):
 def checkinlist():
     db = get_db()
     guestlist = db.execute(
-        'SELECT o.guest_id, guest_name, resort_name, room_number FROM resort r, occupants o, guests g WHERE o.guest_id = g.guest_id and o.resort_id = r.resort_id',
+        'SELECT o.guest_id, guest_name, resort_name, room_number, strftime("%d-%m-%Y", check_in_date),  strftime("%d-%m-%Y", check_out_date) FROM resort r, occupants o, guests g WHERE o.guest_id = g.guest_id and o.resort_id = r.resort_id',
     ).fetchall()
     return render_template('guest/checkinlist.html', guestlist = guestlist)
 
@@ -185,10 +180,6 @@ def checkout(guestid):
             (guestid,),
         ).fetchone()
         db.execute(
-            'UPDATE rooms SET status = 0 WHERE room_number = ?',
-            (room['room_number'],),
-        )
-        db.execute(
             'DELETE FROM occupants WHERE guest_id = ?',
             (guestid,),        
         )
@@ -208,4 +199,10 @@ def checkout(guestid):
         'SELECT guest_name, guest_id, address, phone FROM guests WHERE guest_id = ?',
         (guestid,),
     ).fetchone()
-    return render_template('guest/checkout.html', availedservices = availed_services, room = room, guest = guest)
+    stay = db.execute(
+        'SELECT date(check_in_date) as check_in,  date(check_out_date) as check_out FROM occupants WHERE guest_id = ?',
+        (guestid,),
+    ).fetchone()
+    stay_period = datetime.strptime(stay['check_out'], "%Y-%m-%d") - datetime.strptime(stay['check_in'], "%Y-%m-%d")
+    rent = int(room['room_price']) * stay_period.days
+    return render_template('guest/checkout.html', availedservices = availed_services, room = room, guest = guest, stay_period = stay_period.days, rent = rent)

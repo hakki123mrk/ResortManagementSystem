@@ -25,6 +25,10 @@ header .logo {
     margin-left: 2em;
 }
 
+header .logo a {
+    text-decoration: none;
+}
+
 header .logo-text {
     margin: 9px;
 }

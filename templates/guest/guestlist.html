@@ -3,6 +3,11 @@
 {% block title %}Guest List{% endblock %}
 {% block content %}
     <div class="guestlist">
+        <form>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+        </form>
         <h1>Guest List</h1>
         <table>
             <tr>
@@ -28,10 +33,5 @@
             </tr>
             {% endfor %}
         </table>
-        <form>
-        {% for message in get_flashed_messages() %}
-            <input class="flash" value=" {{ message }} " readonly/>
-        {% endfor %}
-        </form>
     </div>
 {% endblock %}

@@ -12,27 +12,30 @@
 <body>
     <header>
        <div class="logo">
-           <h1 class="logo-text"><span>Romeo</span>Resorts</h1>
+           <a href="{{ url_for('auth.index') }}"><h1 class="logo-text"><span>Romeo</span>Resorts</h1></a>
         </div>
         <ul class="nav">
             <li>
-                <a href="{{ url_for('guest.guestlist') }}">Guests</a>
+                <a href="">Guests</a>
                 <ul>
                     <li><a href="{{ url_for('guest.addguest') }}">Add Guest</a></li>
+                    <li><a href="{{ url_for('guest.guestlist') }}">Guest List</a></li>
                     <li><a href="{{ url_for('guest.checkinlist') }}">Checked-in Guests</a></li>
                 </ul>
             </li>
             <li>
-                <a href="{{ url_for('emp.employeelist') }}">Employee</a>
+                <a href="#">Employee</a>
                 <ul>
                     <li><a href="{{ url_for('emp.registeremployee') }}">Add Employee</a></li>
+                    <li><a href="{{ url_for('emp.employeelist') }}">Employee List</a></li>
                     <li><a href="{{ url_for('emp.postinglist') }}">Posting List</a></li>
                 </ul>
             </li>
             <li>
-                <a href="{{ url_for('resort.resortlist') }}">Resorts</a>
+                <a href="#">Resorts</a>
                 <ul>
                     <li><a href="{{ url_for('resort.addresort') }}">Add Resort</a></li>
+                    <li><a href="{{ url_for('resort.resortlist') }}">Resort List</a></li>
                 </ul>
             </li>
             <li>

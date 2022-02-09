@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title%}Home{% endblock %}
+{% block links %} <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for data in indexdata %}
+        <div class="column">
+            <div class="card">
+                <h4><b>Resort Name : {{ data['resort_id'] }}</b></h4>
+                <p>Checked in guests : {{ data['checked_guests'] }}</p>
+                <p>Available Rooms : {{ data['available_rooms'] }}</p>
+                <p>Posted Employees : {{ data['posted_employees'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    <div class="checkoutlist">
+        <h1>Check-Out List</h1>
+        <table>
+            <tr>
+                <th>Guest ID</th>
+                <th>Guest Name</th>
+                <th>Resort Name</th>
+                <th>Room Number</th>
+                <th>Actions</th>
+            </tr>
+            {% for guest in checkoutlist %}
+            <tr>
+                <td>{{ guest['guest_id'] }}</td>
+                <td>{{ guest['guest_name'] }}</td>
+                <td>{{ guest['resort_name'] }}</td>
+                <td>{{ guest['room_number'] }}</td>
+                <td><a style="color: green; text-decoration: none;" href="{{ url_for('guest.checkout',guestid=guest[0]) }} ">check-out</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

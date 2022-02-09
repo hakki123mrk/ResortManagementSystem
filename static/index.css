@@ -1,0 +1,95 @@
+.container {
+    margin-top: 2%;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(100, 149, 237, 0.5);
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 2px 8px;
+}
+
+.card h4 {
+    padding: 4% 0;
+    margin: 0%;
+    font-family: 'Brush Script MT', cursive;
+}
+
+.card p {
+    padding: 4% 0;
+    margin: 0%;
+    font-family: 'Brush Script MT', cursive;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(100, 149, 237, 0.8);
+}
+
+.column {
+    width: 33.33%;
+    padding: 0 10px;
+    width: 256px;
+    margin: 0px 20px;
+    color: rgb(35, 6, 114);
+}
+
+.row {
+    margin: 0% 10%;
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
+    overflow-x: auto;
+    padding: 10px 40px 10px 256px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+  table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+}
+
+table th td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table th, td {
+    padding: 12px 6px;
+}
+
+table tr:hover {
+    background-color: #ddd;
+}
+
+table th {
+    text-align: center;
+    background-color: cornflowerblue;
+    color: white;
+}
+
+table tr td {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr td a {
+    font-style: italic;
+    font-size: small;
+    text-decoration: none;
+}
+
+.checkoutlist {
+    margin: auto;
+    padding-top: 4%;
+    width: 80%;
+    align-items: center;
+    max-width: fit-content;
+}

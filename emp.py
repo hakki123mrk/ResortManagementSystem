@@ -117,7 +117,7 @@ def postemployee(employeeid):
 def postinglist():
     db = get_db()
     employee = db.execute(
-        'SELECT ep.employee_id, emp_name, resort_name, designation  FROM employee_posting ep, employee e, resort r WHERE ep.employee_id = e.employee_id and ep.resort_id = r.resort_id',
+        'SELECT ep.employee_id, emp_name, resort_name, designation, strftime("%d-%m-%Y",date_of_posting)  FROM employee_posting ep, employee e, resort r WHERE ep.employee_id = e.employee_id and ep.resort_id = r.resort_id',
     ).fetchall()
 
     return render_template('employee/postinglist.html', posting = employee)

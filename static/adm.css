@@ -5,7 +5,7 @@ form {
     margin: auto;
     padding: 15px;
     text-align: center;
-    padding-top: 8%;
+    padding-top: 4%;
 }
 
 form .input {
@@ -95,6 +95,6 @@ table td {
     padding: 10px;
     width: 80%;
     align-items: center;
-    padding-top: 8%;
+    padding-top: 4%;
     max-width: 520px;
 }

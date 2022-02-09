@@ -3,6 +3,11 @@
 {% block title %}Employee List{% endblock %}
 {% block content %}
     <div class="employeelist">
+        <form>
+        {% for message in get_flashed_messages() %}
+            <input class="flash" value=" {{ message }} " readonly/>
+        {% endfor %}
+        </form>
         <h1>Employee List</h1>
         <table>
             <tr>
@@ -26,10 +31,5 @@
             </tr>
             {% endfor %}
         </table>
-        <form>
-        {% for message in get_flashed_messages() %}
-            <input class="flash" value=" {{ message }} " readonly/>
-        {% endfor %}
-        </form>
     </div>
 {% endblock %}
